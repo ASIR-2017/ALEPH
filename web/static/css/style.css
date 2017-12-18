@@ -1,0 +1,27 @@
+#id_material > li > label > input,
+#id_tecnica > li > label > input,
+#id_soporte > li > label > input {
+	width: 6px;
+	margin-top: -6px;
+	margin-left: -6px;
+	margin-right: 6px;
+	position: relative;
+	float: left;
+}
+#id_material, #id_tecnica, #id_soporte {
+	background-color: whitesmoke;
+	margin: 0;
+	padding: 10px 0;
+	height: 180px !important;
+	overflow-y: scroll;
+}
+#id_material > li > label:hover,
+#id_tecnica > li > label:hover,
+#id_soporte > li > label:hover {
+    color: #066;
+}
+th {
+	background-color: #d9edf7;
+	color: #31708f;
+}
+

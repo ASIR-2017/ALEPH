@@ -1,0 +1,229 @@
+/* CUSTOM STYLE */
+
+table.sortable th {
+    background: #DEF;
+    color: #066;
+}
+
+.panel-info > .panel-heading {
+    font-size: 15px;
+    font-family: Droid Serif,regular;
+    font-weight: bold;
+}
+
+.button {
+    height: 30px;
+    color: whitesmoke;
+    background-color: #399;
+    border-color: #399;
+    border-radius: 5px;
+    font-size: 15px;
+    font-family: Droid Serif,regular;
+    font-weight: bold;
+}
+
+.button.button0 {
+    height: auto;
+}
+
+.col-5 > label {
+    font-weight: bold !important;
+    margin: 5px 0;
+    padding: 0;
+}
+
+img {
+    opacity: 0.75;
+}
+
+a {
+    color: #399;
+}
+
+a:hover, a:focus {
+    color: #066;
+}
+
+.add-another > img {
+    margin-left: 3px;
+}
+
+#id_seccion, #id_ubicacion, #id_cultura, #id_material,
+#id_serie, #id_yacimiento, #id_edad, #id_bibliografia,
+#id_escritor, #id_iconografia, #id_produ, #id_soporte,
+#id_procedencia, #id_tecnica, #id_autor, #id_donante,
+#id_estudio {
+    float: left !important;
+    width: 94.5% !important;
+    height: 30px !important;
+    margin-right: 5%;
+    margin-bottom: 5px;
+}
+
+div.card > form > div > div > #id_yacimiento,
+div.card > form > div > div > #id_procedencia {
+    float: none !important;
+    width: 100% !important;
+    height: auto !important;
+}
+
+#div_id_tecnica > .controls > .add-another > img,
+#div_id_material > .controls > .add-another > img,
+#div_id_iconografia > .controls > .add-another > img,
+#div_id_bibliografia > .controls > .add-another > img {
+    position: relative !important;
+    top: -7px !important;
+}
+
+.button.button0.btn.btn-default:hover,
+.button.button0.btn.btn-default:focus,
+.button.button0.btn.btn-default:active {
+    color: white;
+    background-color: #066;
+}
+
+.biblio-details,
+.arq-details, .ba-details, 
+.autor-details, .obra-details {
+    background: whitesmoke;
+    border: 3px solid #CCC;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.biblio-details {
+    width: auto; 
+    cursor: help;
+    margin-left: 60px;
+}
+
+.biblio-details:hover, .obra-details:hover {
+    background-color: #EEE !important;
+}
+
+.pagination > a {
+    font-style: italic;
+    font-weight: bold;
+}
+
+.pnl-admin, .pnl-datetime {
+    position: absolute !important;
+    right: 15px !important;
+}
+
+.pnl-admin > a {
+    font-style: italic !important; 
+    color:#FFF !important;
+}
+
+.pnl-admin > a:hover {
+    color:#EEE !important;
+}
+
+.pnl-datetime > a {
+    pointer-events: none;
+    font-size: 13.5px;
+    cursor: default;
+    color: white !important;
+    font-family: Droid Serif;
+    text-shadow: 0px 1px #333;
+}
+
+.pnl-datetime > a > span {
+    background-image: url(/static/suit/img/glyphicons-halflings-white-shadow.png);
+    background-position: -48px -24px;
+    display: inline-block;
+    position: relative;
+    top: 2.5px;
+    width: 13px;
+    text-shadow: none;
+}
+
+.img-icon {
+    -webkit-filter: hue-rotate(321deg);
+    filter: hue-rotate(321deg);
+}
+
+.img-icon2 {
+    -webkit-filter: hue-rotate(333deg);
+    filter: hue-rotate(333deg);
+}
+
+.img-back {
+    position: relative;
+    top: -2.5px;
+}
+
+.pagination > li:first-child > a, 
+.pagination > li:first-child > span {
+    border-radius: 10px 0px 0px 10px;
+}
+
+.pagination > li:last-child > a, 
+.pagination > li:last-child > span {
+    border-radius: 0px 10px 10px 0px;
+}
+
+.pagination > li > a, .pagination > li > span {
+    color: #399;
+}
+
+.pagination > li > a:focus, .pagination > li > a:hover, 
+.pagination > li > span:focus, .pagination > li > span:hover {
+    color: #066;
+}
+
+.pagination > .active > a, .pagination > .active > a:focus, 
+.pagination > .active > a:hover, .pagination > .active > span, 
+.pagination > .active > span:focus, .pagination > .active > span:hover {
+    background-color: #399;
+}
+
+.pagination > li > a, .pagination > li > span {
+    border-color: rgb(200,200,200) !important;
+}
+
+.pagination > li > a:hover {
+    background-color: rgb(200,200,200) !important;
+}
+
+.pag-info {
+    position: relative;
+    top: +10px;
+    color: #066;
+}
+
+table.sortable th {
+    cursor: pointer;
+}
+
+table > tbody > tr:hover, table.sortable > tbody > tr:hover {
+    background-color: #EEE;
+}
+
+.gz-img {
+    cursor:zoom-in;
+    padding: 16px 0 0 16px;
+}
+
+.index-table {
+    float: left;
+    width: 100%;
+}
+
+.calendar caption, .calendarbox h2 {
+    background: #BDF !important;
+}
+
+#year {
+    color: #399;
+    font-weight: bold;
+}
+
+#mapa {
+    width:98%;
+    height: 300px;
+    margin: 10px auto;
+    padding: 10px;
+    color: #1E1E1E;  
+}

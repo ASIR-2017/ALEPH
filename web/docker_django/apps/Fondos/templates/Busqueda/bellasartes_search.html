@@ -8,68 +8,91 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
   <form method="get">
 {% endblock %}
-{% block content %}
 <div class ="left">
 <div class="col-5">
    <div class="form-group ">
-         {{ filter.form.objeto.label_tag }}
-         {% render_field filter.form.objeto class="form-control" %}
+         {{ filter.form.titulo.label_tag }}
+         {% render_field filter.form.titulo class="form-control" %}
         </div>
-        </div>
-     <div class="col-5">
-          {{ filter.form.titulo.label_tag }}
-          {% render_field filter.form.titulo class="form-control" %}
         </div>
         <div class="col-5">
+        <div class="form-group ">
           {{ filter.form.autor.label_tag }}
           {% render_field filter.form.autor class="form-control" %}
         </div>
+        </div>
     <div class="col-5">
+    <div class="form-group ">
           {{ filter.form.numinv.label_tag }}
           {% render_field filter.form.numinv class="form-control" %}
         </div>
+        </div>
+<div class="checkbox">
 <div class="col-5">
- <div class="checkbox">
           {{ filter.form.tecnica.label_tag }}
           {% render_field filter.form.tecnica class="form-control" %}
     </div>
     </div>
+<div class="checkbox">
 <div class="col-5">
- <div class="checkbox">
           {{ filter.form.soporte.label_tag }}
           {% render_field filter.form.soporte class="form-control" %}
     </div>
     </div>
+     <div class="col-5">
+          {{ filter.form.objeto.label_tag }}
+          {% render_field filter.form.objeto class="form-control" %}
+        </div>
+ </form>
+ <br />
 <button class="button button1"  class="btn btn-primary btn-md">Buscar</button></a></p>
-  </form>
-      </head>
       </div>
       </div>  
       </div>
       </div>
-      </div>
-      
+</div>
 <div class="container">
-<div class="right">
-<table class="sortable" width="50 %">
+<div class="right" style="height: 24px">
+ <center style="color:red;">
+  {% if filter.qs|length > 100 %}
+   <p style="padding: 0; cursor: pointer;" class="alert">
+    <button style="background: 0 0; border: 0;" data-dismiss="alert">
+     Mostrando 100 elementos de {{ filter.qs|length }} resultados
+    </button>
+   </p>
+  {% endif %}
+ </center>
+</div>
+<div class="right" style="margin-left: 40%;overflow-y: auto;height: 636px;">
+{% if filter.qs %}
+<table class="sortable" width="100%">
   <tr>
-    <th>Numero inventario</th>
-    <th>Titulo de la obra</th>
-    </tr>
-      {% for objeto in filter.qs %}
+    <th>Número de inventario</th>
+    <th>Título de la obra</th>
+  </tr>
+  {% for objeto in filter.qs|slice:":100" %}
   <tr> 
-     <td> {{ objeto.propietario}}{{ objeto.numinv }}<a href="/bellasartes/{{ objeto.pk }}"><img src="/static/img/see.png" width="30" height="30" alt="Detalles"/></a></td>
+    <td> {{ objeto.propietario}}{{ objeto.numinv }}<a href="/bellasartes/{{ objeto.pk }}"><img class="img-icon" src="/static/img/see.png" width="30" height="30" alt="Detalles"/></a></td>
     <td>{{ objeto.titulo }}</td>
-      {% endfor %}
-</tr>
-  </table>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<ul class="messages"><li><div class="alert alert-warning" role="alert">No se encontró ningún resultado</div></li></ul>
+{% endif %}
   </div>
   </div>
   </div>
   </div>
-{% endblock %}
+<style>
+#id_autor, #id_tecnica, #id_soporte {
+    width: 100% !important;
+    float: none !important;
+}
+</style>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
     <script src="{%static '/js/bootstrap.min.js' %}"></script>

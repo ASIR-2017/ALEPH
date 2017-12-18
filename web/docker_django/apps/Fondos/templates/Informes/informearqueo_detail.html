@@ -5,47 +5,39 @@
 <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'></script>
 <script src="{% static '/js/jquery.min.js' %}"></script>
 </head>
-<div class="container">
 {% for datos in datos %}
-    <h1><a href="#" onclick="history.go(-1)"><img src="/static/img/back.jpg" width="30" height="30" alt="Atrás"/></td></a></a>
-Informe de {{ datos.codigo }}{{ datos.numinv }}</h1>
+<div class="container">
+<h1 style="margin-left: 0px;"><a href="{% url 'detallearqueo' datos.pk %}"><img src="/static/img/back.png" width="30" height="30" alt="Atrás"/></td></a></a>
+Informe de conservación de {{ datos.codigo|default:"" }}{{ datos.numinv }} - {{ datos.nombre|default:"(?)" }}</h1>
+<br />
 <table class="table">
-      <b><h3>Revisión de arqueología</h3></b>
-<p><b>Nombre restaurador:</b>{{ instance.nombre_res }}</p>
-<p><b>Apellido restaurador:</b>{{ instance.ape_res }}</p>
-<p><b>Ubicación:</b>{{ datos.ubicacion }}</p>
-</div>
+<tr><th>Restaurador</th><td>{{ instance.nombre_res }} {{ instance.ape_res }}</td></tr> 
+<tr><th>Proyecto de intervención</th><td>{{ instance.proyecto }}</td></tr> 
+<tr><th>Diagnóstico</th><td>{{ instance.diagnostico }}</td></tr> 
+<tr><th>Desarrollo</th><td>{{ instance.desarrollo }}</td></tr> 
+<tr><th>Fecha del informe</th><td>{{ instance.fecha }}</td></tr> 
+</table>
 </div>
 <div class="container">
-<table class="table">
-<h1>Descripción</h1>
-<th>Número de inventario</th>
-<th>Nombre</th>
-<th>Cronología</th>
-<th>Composicion</th>
-<th>Origen</th>
-<th>Tipología</th></tr>      
-<tr>
-<td>{{ datos.numinv }}</td>
-<td>{{ datos.nombre }}</td>>
-<td>{{ datos.datacion }}</td>
+<h2>Descripción del objeto</h2>
+<table class="table" style="width: 42%; float: left;">
+<tr><th>Número de inventario</th><td>{{ datos.codigo|default:"" }}{{ datos.numinv }}</td></tr> 
+<tr><th>Nombre</th><td>{{ datos.nombre }}</td></tr> 
+<tr><th>Cronología</th><td>{{ datos.datacion|default:"DESCONOCIDA" }}</td></tr> 
+<tr><th>Composicion</th><td>
 {% for material in datos.material.all %}
-<td>{{ material.nombre }}</td>
+{{ material.nombre }}&nbsp;&nbsp;&nbsp;
 {% endfor %}
-<td>{{ datos.yacimiento }}</td>
-<td>{{ datos.seccion }}</td>
-</tr>
+</td></tr> 
+<tr><th>Origen</th><td>{{ datos.yacimiento|default:"DESCONOCIDO" }}</td></tr> 
+<tr><th>Tipología</th><td>{{ datos.seccion|default:"DESCONOCIDA" }}</td></tr> 
 </table>
-<p align="center"><img src="{{ datos.anverso.url }}" width="240px"><img src="{{ datos.reverso.url }}" width="240px"></p>{% endfor %}
+<center style="width: 56%; float: right;">
+	<img class="gz-img" onclick="window.open(this.src, '_blank','menubar=no');" src="{% if datos.anverso %}{{ datos.anverso.url }}{% else %}/static/img/noimage.png{% endif %}" width="240px">
+	<img class="gz-img" onclick="window.open(this.src, '_blank','menubar=no');" src="{% if datos.reverso %}{{ datos.reverso.url }}{% else %}/static/img/noimage.png{% endif %}" width="240px">
+</center>
 </div>
-</div>
-<p><b>Proyecto de intervención:</b>
-{{ instance.proyecto }}
-
-<p><b>Diagnóstico:</b>
-{{ instance.diagnostico }}</p>
-</div>
-</div>
+{% endfor %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="{% static '/js/bootstrap.min.js' %}"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

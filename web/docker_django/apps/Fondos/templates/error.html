@@ -2,8 +2,20 @@
 <html lang="es">
 <head>
     <meta charset="utf-8">
-    <title>Page Not Found</title>
+    <title>Oops...</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <script src="//code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+	<script src="{% static 'js/sorttable.js' %}"></script> 
+	<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+	<link href="{% static 'css/ie10-viewport-bug-workaround.css' %}" rel="stylesheet">
+	<link href="{% static 'css/navbar-static-top.css' %}" rel="stylesheet">
+	<script src="{% static 'js/ie-emulation-modes-warning.js' %}"></script>
+	<link href="{% static 'css/custom.css' %}" rel="stylesheet">
+	<script src="{% static 'js/formrepo.js' %}"></script>
+	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Quicksand" />
+	<link href='//fonts.googleapis.com/css?family=Droid+Serif' rel='stylesheet'>
+	<link href='//fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet'>
     <style>
         * {
             line-height: 1.2;
@@ -31,6 +43,17 @@
             margin: 0 auto;
             width: 280px;
         }
+        img {
+            width: 50px;
+            height: 50px;
+        }
+        .oops > span {
+            font-size: 9em;
+            cursor: default;
+        }
+        .oops > span:hover {
+            color: yellow;
+        }
         @media only screen and (max-width: 280px) {
             body, p {
                 width: 95%;
@@ -41,13 +64,15 @@
             }
         }
     </style>
+    {% include 'easter_egg.html' %}
 </head>
 <body>
-    <h1>No tiene permiso para acceder a esta página</h1>
-     Parece ser que ha intentado realizar una acción no autorizada, si piensa que es un error
-     contacte con el administrador o ponga una <a href="/ticket/crear_ticket/"><B>Incidencia</B></a>
-    <p><a href="#" onclick="history.go(-1)"><img src="/static/img/back.jpg" width="30" height="30" alt="Atrás"/></a>
-</p>
+    <div class="oops"><span>⚠</span></div>
+    <h1>No tiene permiso para acceder a esta página</h1><hr />
+     <h4>Parece ser que ha intentado realizar una acción no autorizada.<br />
+     Si piensa que esto es un error contacte con el administrador o ponga una 
+     <a target="_blank" href="/ticket/crear_ticket/"><strong>Incidencia</strong></a></h4>
+     <hr /><a href="#" onclick="history.go(-1)"><img class="img-icon" src="/static/img/back.png" width="30" height="30" alt="Atrás"/></a>
 </body>
 </html>
 <!-- IE needs 512+ bytes: https://blogs.msdn.microsoft.com/ieinternals/2010/08/18/friendly-http-error-pages/ -->

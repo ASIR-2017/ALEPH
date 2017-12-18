@@ -1,7 +1,77 @@
 body {
-  min-height: 2000px;
+    min-height: 200px;
+    margin-bottom: 0;
+}
+
+tbody {
+    background-color: whitesmoke;
+}
+
+th {
+    background-color: #d9edf7;
+    color: #31708f;
+}
+
+#navbar > ul > li, .navbar-nav > li > a {
+    font-style: normal;
+    font-weight: bold;
+}
+
+.dropdown-menu {
+    background-color: #CCC;
 }
 
 .navbar-static-top {
-  margin-bottom: 19px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    border: 2px outset;
+}
+
+.show > .dropdown-menu {
+    display: block !important;
+}
+
+.navbar-default {
+    background-color: #399;
+    border-color: #066;
+}
+
+.navbar-default table.sortable th.navbar-nav > li > a {
+    color: #DDD;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: #DDD;
+}
+
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:focus, .navbar-default .navbar-nav > .open > a:hover {
+    color: #EEE;
+    background-color: #066;
+}
+
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:focus, .navbar-default .navbar-nav > .open > a:hover {
+    color: #EEE;
+    background-color: #066;
+}
+
+.navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:hover {
+    color: #FFF;
+    background-color: transparent;
+}
+
+.navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:hover  {
+    color: #FFF;
+    background-color: transparent;
+}
+
+.navbar-toggle, .navbar-default .navbar-toggle:focus {
+    background-color: #066;
+}
+
+.navbar-default .navbar-toggle:hover {
+    background-color: #9CC;
+}
+
+.navbar-nav .open .dropdown-menu {
+    background-color: #CCC;
 }

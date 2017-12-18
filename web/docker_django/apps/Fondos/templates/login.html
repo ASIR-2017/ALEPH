@@ -1,4 +1,5 @@
 {% load static %}
+{% load crispy_forms_tags %}
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,12 +10,22 @@
 <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
 <link href="{% static 'css/ie10-viewport-bug-workaround.css' %}" rel="stylesheet">
 <link href="{% static 'css/navbar-static-top.css' %}" rel="stylesheet">
+<link href="{% static 'css/custom.css' %}" rel="stylesheet">
 <link href='//fonts.googleapis.com/css?family=Muli' rel='stylesheet'>
 <script src="{% static 'js/ie-emulation-modes-warning.js' %}"></script>
+<script src="//code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+{% include 'easter_egg.html' %}
 </head>
+{% for error in form.non_field_errors %}
+<div class="login-errors">
+<ul class="messages">
+<li><div class="alert alert-danger" role="alert">{{ error }}</div></li>
+</ul>
+</div>
+{% endfor %}
 <div class="wrap">
 <div class="avatar">
-<img src="http://www.clker.com/cliparts/2/e/2/4/12428013961588839005Phoenician_aleph.svg.med.png">
+<img src="/media/aleph.png">
 </div>
 <div class="card">
 <form method="post" action="{% url 'login' %}">
@@ -27,9 +38,10 @@
 </div>
  <td>Contraseña</td>
 <td>{{ form.password }}</td>
+<br />
 <p>
 <center>
-<button class="button button1">Iniciar sesión</button>
+<button class="button button0">Iniciar sesión</button>
 </center>
 </label>
 <input type="hidden" name="next" value="{{ next }}" /></p>
@@ -37,6 +49,7 @@
 </div>
 </div>
 </div>
+<script src="//code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
 <script>
 {% if not user.is_authenticated %}
 $("ul.nav.navbar-nav.navbar-right").css("display","none");

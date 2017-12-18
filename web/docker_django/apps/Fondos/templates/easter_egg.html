@@ -1,0 +1,18 @@
+{% now "d" as dia %}{% now "m" as mes %}
+
+{% if True and dia == '01' and mes == '04' %}
+	<script>
+		$(function() {
+			document.body.style.backgroundColor = '#CCC';
+			for(var i=0;i<document.all.length;i++){
+				document.all[i].style.setProperty('filter','grayscale(1)','');
+				//document.all[i].style.setProperty('filter','hue-rotate(90deg)',''); //ALT
+			} 
+		});
+	</script>
+	<style>
+		.pagination > li, .nav.navbar-nav, .gz-img {
+			filter: none !important;
+		}
+	</style>
+{% endif %}

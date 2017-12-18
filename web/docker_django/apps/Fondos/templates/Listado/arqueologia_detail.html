@@ -1,41 +1,64 @@
 {% include "navbar.html" %}
 {% load static %}
-<h1><a href="#" onclick="history.go(-1)"><img src="/static/img/back.jpg" width="30" height="30" alt="Detalles"/></td></a></a>
-{{ instance.codigo }}{{ instance.numinv }}</h1><a href="/informearqueo_crear/{{ instance.pk }}"><button class="button button1"  class="btn btn-primary btn-md">Crear un nuevo informe</button></a></p>
+<h1 style="margin-left: 0px;"><a href="{% url 'verarqueologia' %}"><img class="img-icon img-back" src="/static/img/back.png" width="30" height="30" alt="Listado"/></td></a></a>
+{{ instance.codigo|default:"" }}{{ instance.numinv }} - {{ instance.nombre|default:"(?)" }}</h1>
+<a href="{% url 'informe-arqueo-crear' instance.pk %}"><button class="button button1"  class="btn btn-primary btn-md">Crear un nuevo informe</button></a>
+<a href="{% url 'actualizararqueologia' instance.pk %}"><button class="button button2"  class="btn btn-primary btn-md">Editar información del objeto</button></a>
+<br /><br />
+<div class="container arq-details">
 <div class="left">
 <div class="table-responsive">
 <tr>
-<td> <img src="{{ instance.anverso.url }}" width="240"></td>
-<td> <img src="{{ instance.reverso.url }}" width="240"></td>
+<td> <img class="gz-img" onclick="window.open(this.src, '_blank','menubar=no');" src="{% if instance.anverso %}{{ instance.anverso.url }}{% else %}/static/img/noimage.png{% endif %}" width="250"></td>
+<td> <img class="gz-img" onclick="window.open(this.src, '_blank','menubar=no');" src="{% if instance.reverso %}{{ instance.reverso.url }}{% else %}/static/img/noimage.png{% endif %}" width="250"></td>
 </tr>
 </table>
 </div>
-{{ instance.nombre }}
+<br />
+<!--<center>{{ instance.nombre }}</center>-->
 </div>
-<div class="container">
 <div class="right">
-<p><b>Edad: </b>{{ instance.edad }}
-<p><b>Descripción:</b>{{ instance.descripcion }}</p>
-<p><b>Cultura:</b>{{ instance.cultura }}<a href="/cultura/{{ instance.cultura.pk }}/actualizar"><img src="/static/img/edit.png" width="30" height="30" alt="Detalles"/></a></p>
-<p><b>Tamaño:</b>{{ instance.altura }} cm x {{ instance.ancho }} cm</p>
-<p><b>Ubicación</b>{{ instance.ubicacion }}</p>
-<p><b>Hallazgos:</b><p>{{ instance.hallazgos }}</p>
-<p><b>Encontrado en:</b>{{ instance.yacimiento }}<a href="/yacimiento/{{ instance.yacimiento.pk }}/actualizar"><img src="/static/img/edit.png" width="30" height="30" alt="Detalles"/></a></p>
-<p><b>Materiales:</b>{% for material in instance.material.all %}<td>{{ material.nombre }}</td><a href="/material/{{ material.pk }}/actualizar"><img src="/static/img/edit.png" width="30" height="30" alt="Detalles"/></a></p>
-{% endfor %}
-<p><b>Bibliografía y referencias</b>{% if instance.bibliografia == None %}
-No hay referencias.
-{% else %}
-{% endif %}
+<p><b>Descripción:</b>{{ instance.descripcion|default:"NO DISPONIBLE" }}</p>
+<p><b>Sección: </b>{{ instance.seccion|default:"DESCONOCIDA" }}
+<p><b>Serie: </b>{{ instance.serie|default:"DESCONOCIDA" }}
+<p><b>Edad: </b>{{ instance.edad|default:"DESCONOCIDA" }}
+<p><b>Cultura:</b>{{ instance.cultura|default:"DESCONOCIDA" }}</p>
+<p><b>Tamaño:</b>{{ instance.altura|default:"0" }} cm X {{ instance.ancho|default:"0" }} cm</p>
+<p><b>Ubicación</b>{{ instance.ubicacion|default:"DESCONOCIDA" }}</p>
+<p><b>Hallazgos:</b><p>{{ instance.hallazgos|default:"NO ENCONTRADOS" }}</p>
+<p><b>Encontrado en:</b>{{ instance.yacimiento|default:"DESCONOCIDO" }}</p>
+<input type="hidden" id="address" value="{% if instance.yacimiento %}{{ instance.yacimiento.lat|default:"" }}, {{ instance.yacimiento.lng|default:"" }}{% endif %}" />
+<input type="hidden" id="location" value="{% if instance.yacimiento %}{{ instance.yacimiento.yacimiento }}{% endif %}" />
+{% if instance.material.all|length %}<p><b>Materiales:</b>{% endif %}
+{% for material in instance.material.all %}<td>{{ material.nombre }}</td>&nbsp;&nbsp;&nbsp;{% endfor %}</p>
+{% if instance.bibliografia.all|length %}<p><b>Bibliografía y referencias:</b></p>{% endif %}
 {% for bibliografia in instance.bibliografia.all %}
-<p>Autor: {{ bibliografia.escritor }}<a href="/bibliografia/{{ bibliografia.pk }}/actualizar"><img src="/static/img/edit.png" width="30" height="30" alt="Detalles"/></a></p>
-<p>Edición: {{ bibliografia.edicion }}</p>
-<p><i>"{{ bibliografia.extracto }}"</i>, Página {{ bibliografia.pagina }}</p>
+<p>{{ bibliografia.titulo }}, {{ bibliografia.escritor }}</p>
+{% if bibliografia.biblio_objeto_set %}
+{% for extracto in bibliografia.biblio_objeto_set.all %}{% if extracto.objeto.id == instance.id %}
+<p onclick="alert(this.title);" title="Página {{ extracto.pagina }}" class="container biblio-details"><i>"{{ extracto.extracto }}"</i></p>
+{% endif %}{% endfor %}
+<p><a href="/agregar/biblio_objeto/arqueologia/{{bibliografia.id}}-{{instance.id}}" class="add-another" id="add_id_" style="text-decoration: none;">
+<img class="img-icon2" src="/static/img/add.png" width="25" height="25" alt="Agregar otro"/></a> Añadir extracto</p>
+{% endif %}{% endfor %}
+{% if instance.objetos_relacionados.all|length %}
+<p><b>Objetos Relacionados: </b>
+{% for objeto in instance.objetos_relacionados.all|dictsort:"numinv" %}
+<td><a href="/arqueologia/{{ objeto.pk }}/">{{ objeto.numinv }} - {{ objeto.arqueologia.nombre|default:"(?)" }}</a></td>&nbsp;&nbsp;&nbsp;
 {% endfor %}
+</p>
+{% endif %}
 </div>
+<!-- GOOGLE MAP -->
+{% if instance.yacimiento.lat and instance.yacimiento.lng %}
+<hr /><b style="margin-left:10px;">Localización del Yacimiento: </b><div id="mapa"></div>
+{% endif %}
+<!-- END GOOGLE MAP -->
 </div>
+{% if estado|length %}
+<hr />
 <div class ="container">
-<h1>Informes realizados</h1>
+<h1>Informes de conservación realizados</h1>
 <table class="sortable">
 <tr>  
 <th>Fecha</th> 
@@ -45,16 +68,47 @@ No hay referencias.
 <tr>
 {% for estado in estado %} 
 <td>{{ estado.fecha }} </td>    
-<td>Ver informe<a href="/informearqueo_ver/{{ estado.id }}/"><img src="/static/img/status.png" width="30" height="30" alt="Detalles"/></td></a>
-<td>Editar informe de estado<a href="/informearqueo_actu/{{ estado.id }}"><img src="/static/img/edit.png" width="30" height="30" alt="Añadir intervención"/></td></a>
+<td><a href="/informearqueo_ver/{{ estado.id }}/"><img class="img-icon" src="/static/img/see.png" width="30" height="30" alt="Detalles"/></a> Ver informe</td>
+<td><a href="/informearqueo_actu/{{ estado.id }}"><img class="img-icon" src="/static/img/edit.png" width="30" height="30" alt="Añadir intervención"/></a> Editar informe de estado</td>
 </tr>
 {% endfor %}
 </table>
 </div>
+{% endif %}
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="{%static '/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyDSXELKuZBdWxl_NEx1UOqB52rTgnz7Mg8"></script>
+<script lang='javascript'>
+	$(function() {
+		if (document.getElementById('address').value.indexOf(',')) inicio();
+	});
+	var map;
+	var lat = document.getElementById('address').value.split(",")[0]
+	var lng = document.getElementById('address').value.split(",")[1]
+	function inicio() {
+		var latlng = new google.maps.LatLng(lat,lng);
+		var mapOptions = {
+		  zoom: 16,
+		  center: latlng,
+		  mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+		map = new google.maps.Map(document.getElementById('mapa'), mapOptions);
+		setLocation(latlng);
+	};
+	function setLocation(latlng) {
+		var address = document.getElementById('address').value;
+			var marker = new google.maps.Marker({
+			  map: map,
+			  position: latlng
+			});
+			infowindow = new google.maps.InfoWindow({
+			  content: '<b>' + document.getElementById('location').value + '</b> Latitud: ' + latlng.lat().toFixed(6) + '<br> Longitud: ' + latlng.lng().toFixed(6)
+			});
+			infowindow.open(map, marker);
+	}
+</script>
 </body>
 </html>
 

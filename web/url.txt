@@ -1,0 +1,1 @@
+http://ceres.mcu.es/pages/ResultSearch?txtSimpleSearch=Departamento%20de%20Bellas%20Artes&simpleSearch=0&hipertextSearch=1&search=simpleSelection&MuseumsSearch=MCA|&MuseumsRolSearch=2&listaMuseos=[Museo%20de%20C%E1diz]

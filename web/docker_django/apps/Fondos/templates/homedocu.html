@@ -4,37 +4,56 @@
 <script src="{%static '/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script> 
 <div class="panel panel-info">
-<div class="panel-heading">Últimas piezas registradas:</div>
-<div class="panel-body">Hola, {{ user }},haga click en el botón para abrir el desplegable para ver su último trabajo realizado</div>
+<div class="panel-heading">Bienvenido Documentador:</div>
+<div class="panel-body">Hola, {{ user }}. Estas son sus últimas tareas realizadas.</div>
 </div>
-<button type="button" class="button button1" data-toggle="collapse" data-target="#informes"> Mis últimas tareas
-</button>
+<button type="button" class="button button1" data-toggle="collapse" data-target="#informes"> Mis últimas tareas <span class="caret"></span> </button>
+<!--
+<button type="button" class="button button1" onclick="ver('arq')"> Ver como: "Restaurador de Arqueología" </button>
+<button type="button" class="button button1" onclick="ver('ba')"> Ver como: "Restaurador de Bellas Artes" </button>
+-->
+<span style="font-size:20px">|</span>
+<button type="button" class="button button1" onclick="location.href='/verarqueologia'"> Objetos en Arqueología: {{totarq}} </button>
+<button type="button" class="button button1" onclick="location.href='/registrararqueologia'"> +1 </button>
+<span style="font-size:20px">|</span>
+<button type="button" class="button button1" onclick="location.href='/verbellasartes'"> Objetos en Bellas Artes: {{totba}} </button>
+<button type="button" class="button button1" onclick="location.href='/registrarbellasartes'"> +1 </button>
+<br /><br />
 <div id="informes" class="collapse in">
 <div class="body">
-<table class="table">
-<th>Arqueología</th>
-         <th>Ver</th>
-         <th>Editar</th>
+{% if ultimosarqueo %}
+<table class="table" style="width:48%; float:left;">
+<th width="200px">Arqueología</th>
+         <th width="50px" style="text-align: center">Ver</th>
+         <th width="50px" style="text-align: center">Editar</th>
      {% for ultimos in ultimosarqueo.all %}
      <tr>
-   <td>{{ ultimos.codigo }}{{ ultimos.numinv }}</td>
-  <td><a href="{{ ultimos.get_absolute_url }}"  role="button"><img src="/static/img/lupa.png" width="30" height="30" alt="Agregar otro"/></a></td>
-  <td><a href="arqueologia/{{ ultimos.pk }}/editar/" role="button"><img src="/static/img/edit.png" width="30" height="30" alt="Agregar otro"/></a></td>
+   <td>{{ ultimos.codigo|default_if_none:"" }}{{ ultimos.numinv }} - {{ ultimos.nombre|default:"(?)" }}</td>
+  <td width="50px"><center><a href="{{ ultimos.get_absolute_url }}"  role="button"><img class="img-icon" src="/static/img/lupa.png" width="30" height="30" alt="Agregar otro"/></a></center></td>
+  <td width="50px"><center><a href="arqueologia/{{ ultimos.pk }}/editar/" role="button"><img class="img-icon" src="/static/img/edit.png" width="30" height="30" alt="Agregar otro"/></a></center></td>
 {% endfor %}
 </tr>
 </table>
-<table class="table">
-<th>Bellas artes</th>
-   <th>Ver</th>
-   <th>Editar</th>
+{% endif %}
+{% if ultimosba %}
+<table class="table" style="width:48%; float:right;">
+<th width="200px">Bellas artes</th>
+   <th width="50px" style="text-align: center">Ver</th>
+   <th width="50px" style="text-align: center">Editar</th>
      {% for ultimos in ultimosba.all %}
      <tr>
-   <td>{{ ultimos.codigo }}{{ ultimos.numinv }}</td>
-  <td><a href="{{ ultimos.get_absolute_url }}"  role="button"><img src="/static/img/lupa.png" width="30" height="30" alt="Ver"/></a></td>
-  <td><a href="bellasartes/{{ ultimos.pk }}/editar/" role="button"><img src="/static/img/edit.png" width="30" height="30" alt="Editar"/></a></td>
+   <td>{{ ultimos.codigo|default_if_none:"" }}{{ ultimos.numinv }} - {{ ultimos.titulo|default:"(?)" }}</td>
+  <td width="50px"><center><a href="{{ ultimos.get_absolute_url }}"  role="button"><img class="img-icon" src="/static/img/lupa.png" width="30" height="30" alt="Ver"/></a></center></td>
+  <td width="50px"><center><a href="bellasartes/{{ ultimos.pk }}/editar/" role="button"><img class="img-icon" src="/static/img/edit.png" width="30" height="30" alt="Editar"/></a></center></td>
   {% endfor %}
-  </tr>
- </table>
-      </div>
-      </div>
+</tr>
+</table>
+{% endif %}
+</div>
+</div>
+<script type="text/javascript">
+  function ver(opt) {
+     location.href = "/index="+opt;
+  }
+</script>
 </html>

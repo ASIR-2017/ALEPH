@@ -1,50 +1,48 @@
 {% include "navbar.html" %}
 {% load static %}
-<head>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="http://mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'></script>
-<script src="{% static '/js/jquery.min.js' %}"></script>
-</style>
-<h1><a href="#" onclick="history.go(-1)"><img src="/static/img/back.jpg" width="30" height="30" alt="Detalles"/></td></a></a>
-{{ instance.codigo }}{{ instance.numinv }}</h1><a href="/registrarestado/{{ instance.pk }}"><button class="button button1" class="btn btn-primary btn-md">Crear un nuevo informe de estado</button></a></p>
+<h1 style="margin-left: 0px;"><a href="{% url 'verbellasartes' %}"><img class="img-icon img-back" src="/static/img/back.png" width="30" height="30" alt="Listado"/></a></a>
+{{ instance.codigo|default:"" }}{{ instance.numinv }} - {{ instance.titulo|default:"(?)" }}</h1>
+<a href="{% url 'registrarestado' instance.pk %}"><button class="button button1" class="btn btn-primary btn-md">Crear un nuevo informe de estado</button></a>
+<a href="{% url 'actualizarbellasartes' instance.pk %}"><button class="button button2"  class="btn btn-primary btn-md">Editar información del objeto</button></a>
+<br /><br />
+<div class="container arq-details">
 <div class="left">
 <div class="table-responsive">
 <tr>
-<td> <img src="{{ instance.anverso.url }}" width="240"></td>
-<td> <img src="{{ instance.reverso.url }}" width="240"></td>
+<td> <img class="gz-img" onclick="window.open(this.src, '_blank','menubar=no');" src="{% if instance.anverso %}{{ instance.anverso.url }}{% else %}/static/img/noimage.png{% endif %}" width="250"></td>
+<td> <img class="gz-img" onclick="window.open(this.src, '_blank','menubar=no');" src="{% if instance.reverso %}{{ instance.reverso.url }}{% else %}/static/img/noimage.png{% endif %}" width="250"></td>
 </tr>
 </table>
 </div>
-{{ instance.titulo }}
-</div> 
-</div> 
-<div class ="container">
+<br />
+<!--<center>{{ instance.titulo }}</center>-->
+</div>
 <div class="right">
-<b>Autor:</b>{{ instance.autor }}<a href="/autor/{{ instance.autor.pk }}/actualizar"><img src="/static/img/edit.png" width="30" height="30" alt="Detalles"/></a></p> 
-<b>Descripción:</b>{{ instance.descripcion }}
-<b>Iconografía</b>
-{% for iconografia in instance.iconografia.all %}<li>{{ iconografia.nombre }}<a href="/iconografia/{{ iconografia.pk }}/actualizar"><img src="/static/img/edit.png" width="30" height="30" alt="Detalles"/></a></p></li>
-{% endfor %}
-<b>Procedencia:</b>{{ instance.procedencia }}</p>
-<b>Tamaño:</b>{{ instance.altura }} cm x {{ instance.ancho }} cm</p>
-<b>Ubicación</b>{{ instance.ubicacion }}</p>
-<b>Soporte</b>{{ instance.soporte}}<a href="/soporte/{{ soporte.pk }}/actualizar"><img src="/static/img/edit.png" width="30" height="30" alt="Detalles"/></a></p>
-<b>Técnica</b>{% for tecnica in instance.tecnica.all %}<li>{{ tecnica.nombre }}<a href="/tecnica/{{ tecnica.pk }}/actualizar"><img src="/static/img/edit.png" width="30" height="30" alt="Detalles"/></a></p></li>
-{% endfor %}
+<p><b>Autor:</b>{{ instance.autor|default:"NO INDICADO" }}</p> 
+<p><b>Descripción:</b>{{ instance.descripcion|default:"NO DISPONIBLE"|linebreaksbr }}</p>
+<p><b>Procedencia:</b>{{ instance.procedencia|default:"DESCONOCIDA" }}</p>
+<p><b>Tamaño:</b>{{ instance.altura|default:"0" }} cm X {{ instance.ancho|default:"0" }} cm</p>
+<p><b>Ubicación:</b>{{ instance.ubicacion|default:"DESCONOCIDA" }}</p>
+<p><b>Soporte:</b>{{ instance.soporte|default:"DESCONOCIDO" }}</p>
+{% if instance.tecnica.all|length %}<p><b>Técnicas:</b>{% endif %}
+{% for tecnica in instance.tecnica.all %}<td>{{ tecnica.nombre }}&nbsp;&nbsp;&nbsp;</td>{% endfor %}</p>
+{% if instance.iconografia.all|length %}<p><b>Iconografía:</b>{% endif %}
+{% for iconografia in instance.iconografia.all %}<td>{{ iconografia.nombre }}&nbsp;&nbsp;&nbsp;</td>{% endfor %}</p>
+{% if instance.bibliografia.all|length %}<p><b>Bibliografía y referencias:</b></p>{% endif %}
 {% for bibliografia in instance.bibliografia.all %}
-<b>Bibliografía y referencias</b>{% if bibliografia == None %}
-No hay referencias.
-{% else %}
-{% endif %}
-Autor: {{ bibliografia.escritor }}<a href="/bibliografia/{{ bibliografia.pk }}/actualizar"><img src="/static/img/edit.png" width="30" height="30" alt="Detalles"/></a></p>
-Edición: {{ bibliografia.edicion }}
-Referencias: <i>{{ bibliografia.extracto }} </i>
-{% endfor %}
+<p>{{ bibliografia.titulo }}, {{ bibliografia.escritor }}</p>
+{% if bibliografia.biblio_objeto_set %}
+{% for extracto in bibliografia.biblio_objeto_set.all %}{% if extracto.objeto.id == instance.id %}
+<p onclick="alert(this.title);" title="Página {{ extracto.pagina }}" class="container biblio-details"><i>"{{ extracto.extracto }}"</i></p>
+{% endif %}{% endfor %}
+<p><a href="/agregar/biblio_objeto/bellasartes/{{bibliografia.id}}-{{instance.id}}" class="add-another" id="add_id_" style="text-decoration: none;">
+<img class="img-icon2" src="/static/img/add.png" width="25" height="25" alt="Agregar otro"/></a> Añadir extracto</p>
+{% endif %}{% endfor %}
 </p>
 </div>
 </div>
+{% if estado|length %}
+<hr />
 <div class ="container">
 <h1>Informes realizados</h1>
 <table class="sortable">
@@ -57,17 +55,22 @@ Referencias: <i>{{ bibliografia.extracto }} </i>
 </tr>
 <tr>
 {% for estado in estado %} 
-<td>{{ estado.fecha }} </td>    
-<td>{{ estado.prioridad }} </td>
-<td>Ver informe<a href="/estado/{{ estado.id }}/"><img src="/static/img/status.png" width="30" height="30" alt="Detalles"/></td></a>
-<td>Añadir intervención al informe<a href="/registrarintervencion/{{ estado.id }}"><img src="/static/img/add.png" width="30" height="30" alt="Añadir intervención"/></td></a>
-<td>Editar informe de estado<a href="/estadoactualizar/{{ estado.id }}"><img src="/static/img/edit.png" width="30" height="30" alt="Añadir intervención"/></td></a>
+<td>{{ estado.fecha }}</td>
+<td>{{ estado.prioridad }}{% if estado.informeintervencion.priori_des %}&nbsp;&nbsp;&nbsp;→&nbsp;&nbsp;&nbsp;{{ estado.informeintervencion.priori_des }}{% endif %}<span class="hidden">fix_order</span></td>
+<td><a href="/estado/{{ estado.id }}/"><img class="img-icon" src="/static/img/see.png" width="30" height="30" alt="Detalles"/></a> Ver informe</td>
+{% if not estado.informeintervencion %}
+<td><a href="/registrarintervencion/{{ estado.id }}"><img class="img-icon2" src="/static/img/add.png" width="30" height="30" alt="Añadir intervención"/></a> Añadir intervención al informe</td>
+{% else %}
+<td><a href="/estado/{{ estado.id }}/"><img class="img-icon" src="/static/img/lupa.png" width="30" height="30" alt="Detalles"/></a> Ya existe una intervención</td>
+{% endif %}
+<td><a href="/estadoactualizar/{{ estado.id }}"><img class="img-icon" src="/static/img/edit.png" width="30" height="30" alt="Añadir intervención"/></a> Editar informe de estado</td>
 </tr>
 {% endfor %}
 </table>
 </div>
+{% endif %}
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="{% static '/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
 </script> 

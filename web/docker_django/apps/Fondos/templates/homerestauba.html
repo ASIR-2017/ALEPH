@@ -6,21 +6,44 @@
 </body>
 <div class="container">
 <div class="panel panel-info">
-<div class="panel-heading">Últimos informes realizados</div>
-<div class="panel-body">Hola, {{ user }},haga click en el botón para abrir el desplegable para ver su último trabajo realizado</div>
+<div class="panel-heading">Bienvenido Restaurador de Bellas Artes</div>
+<div class="panel-body">Hola, {{ user }}. Estas son sus últimas tareas realizadas.</div>
  </div>
-<button type="button" class="button button1" data-toggle="collapse" data-target="#informes"> Mis últimas tareas
-</button>
+<button type="button" class="button button1" data-toggle="collapse" data-target="#informes"> Mis últimas tareas <span class="caret"></span> </button>
+<span style="font-size:20px">|</span>
+<button type="button" class="button button1" onclick="exportar()"> Exportar informes de estado del año: </button>
+<input id="year" type="number" min="0" max="9999" maxlength="4" style="width: 64px;" value="{% now 'Y' %}" onkeypress="return:false;" />
 <div id="informes" class="collapse in">
+<h1 style="margin-left: 0px;">Informes realizados</h1>
+<table class="sortable index-table">
+<tr>  
+<th>Objeto</th> 
+<th>Prioridad</th> 
+<th width="120px">Detalles</th> 
+<th width="240px">Añadir intervención</th> 
+<th width="240px">Editar intervención</th> 
+</tr>
+<tr>
 {% for ultimos in ultimosinfo.all %}
-<b>Informes de estado</b>
-<p>Número de inventario: {{ ultimos.objeto.codigo }}{{ ultimos.objeto.numinv }}</p>
-<p>Prioridad:{{ ultimos.prioridad }}</p>
-<p>Ver informe<a href="/estado/{{ ultimos.id }}"><img src="/static/img/status.png" width="30" height="30" alt="Detalles"/></p></a>
-<p>Añadir intervención al informe<a href="/registrarintervencion/{{ ultimos.id }}"><img src="/static/img/add.png" width="30" height="30" alt="Añadir intervención"/></a></p>
-<p>Editar informe<a href="/estadoactualizar/{{ ultimos.id }}"><img src="/static/img/edit.png" width="30" height="30" alt="Añadir intervención"/></p></a>
-{% endfor %}             
+<td><a href="/bellasartes/{{ ultimos.objeto.id }}/">{{ ultimos.objeto.codigo|default_if_none:"" }}{{ ultimos.objeto.numinv }} - {{ ultimos.objeto.bellasartes.titulo|default:"(?)" }}</a></td>
+<td>{{ ultimos.prioridad }}{% if ultimos.informeintervencion.priori_des %}&nbsp;&nbsp;&nbsp;→&nbsp;&nbsp;&nbsp;{{ ultimos.informeintervencion.priori_des }}{% endif %}<span class="hidden">fix_order</span></td>
+<td><a href="/estado/{{ ultimos.id }}/"><img class="img-icon" src="/static/img/see.png" width="30" height="30" alt="Detalles"/></a> Ver informe</td>
+{% if not ultimos.informeintervencion %}
+<td><a href="/registrarintervencion/{{ ultimos.id }}"><img class="img-icon2" src="/static/img/add.png" width="30" height="30" alt="Añadir intervención"/></a> Añadir intervención al informe</td>
+{% else %}
+<td><a href="/estado/{{ ultimos.id }}/"><img class="img-icon" src="/static/img/lupa.png" width="30" height="30" alt="Detalles"/></a> Ya existe una intervención</td>
+{% endif %}
+<td><a href="/estadoactualizar/{{ ultimos.id }}"><img class="img-icon" src="/static/img/edit.png" width="30" height="30" alt="Añadir intervención"/></a> Editar informe de estado</td>
+</tr>
+{% endfor %}
+</table>
 </div>
 </div>
 </div>
+<script type="text/javascript">
+  function exportar () {
+     var year = document.getElementById('year').value;
+     location.href = "/informeba_csv/"+year;
+  }
+</script>
 </html>

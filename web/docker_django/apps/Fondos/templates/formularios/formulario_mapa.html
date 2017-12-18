@@ -1,0 +1,92 @@
+ <!--Plantilla HTML para el formulario de arqueologia-->
+{% include 'navbar.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<div class="container">
+<div class="jumbotron">
+<form method='POST' onsubmit='return serMap(this);' action='' enctype='multipart/form-data'>{% csrf_token %}
+<small>
+{{ form.media }}
+{{ form|crispy }}
+ </small>
+ <div id="div_mapa">
+ <b>Localización del Yacimiento: </b><div id="mapa"></div><br />
+ <input id="borrar" type="checkbox" />&nbsp;&nbsp;<span style="position: relative; top:-1px;">Borrar localización</span>
+ <br /><br /></div>
+ <button type="submit" class="button button0 save btn btn-default">Guardar</button> | <a href="javascript:history.back()">Cancelar</a>
+</form>
+</div>
+</div>
+<style>
+#mapa {
+    margin: 0 !important;
+}
+</style>
+{% endblock %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="{%static '/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+<script lang='javascript'>
+  function serMap (f) {
+     if (document.getElementById('borrar').checked) {
+       document.getElementById('id_lat').value = null;
+       document.getElementById('id_lng').value = null;
+     }
+     f.submit();
+  }
+</script>
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyDSXELKuZBdWxl_NEx1UOqB52rTgnz7Mg8"></script>
+<script lang='javascript'>
+	$(function() {
+		inicio();
+	});
+	var map, geocoder;
+	var lat = 36.53497179676964
+	var lng = -6.296373009681702
+	if (document.getElementById('id_lat').value) lat=document.getElementById('id_lat').value;
+	if (document.getElementById('id_lng').value) lng=document.getElementById('id_lng').value;
+	function inicio() {
+		var latlng = new google.maps.LatLng(lat,lng);
+		var mapOptions = {
+		  zoom: 16,
+		  center: latlng,
+		  mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+		map = new google.maps.Map(document.getElementById('mapa'), mapOptions);
+		geocoder = new google.maps.Geocoder();
+		setLocation();
+	};
+	function setLocation() {
+		var address = "Museo de Cádiz";
+		if (document.getElementById('id_lat').value && document.getElementById('id_lng').value)
+			address = lat + ", " + lng;
+		geocoder.geocode({
+		  'address': address
+		}, function(results, status) {
+		  if (status == google.maps.GeocoderStatus.OK) {
+			map.setCenter(results[0].geometry.location);
+			var marker = new google.maps.Marker({
+			  map: map,
+			  position: results[0].geometry.location
+			});
+			map.addListener('click', function(event) {
+				document.getElementById('id_lat').value = event.latLng.lat();
+				document.getElementById('id_lng').value = event.latLng.lng();
+				if (marker) {
+					marker.position = event.latLng;
+					marker.setMap(map);
+				}else{
+					marker = new google.maps.Marker({position: event.latLng, map: map});
+				}
+			});
+			//infowindow = new google.maps.InfoWindow({
+			//  content: results[0].formatted_address + '<br> Latitud: ' + results[0].geometry.location.lat().toFixed(6) + '<br> Longitud: ' + results[0].geometry.location.lng().toFixed(6)
+			//});
+			//infowindow.open(map, marker);
+		  } else {
+			  document.getElementById('div_mapa').style.display="None";
+		  }
+		})
+	};
+</script>

@@ -1,0 +1,72 @@
+{% include "navbar.html" %}
+{% load static %}
+<div id="container" align="middle">
+<form method='GET' action=''>
+<input type='text' name='q' placeholder='Búsqueda' value='{{ request.GET.q }}' />
+<input type='submit' class='button button0 btn btn-default' value='Buscar' />
+</form>
+</div>
+<div class="container">
+{% if object_list %}
+<table class="sortable">
+    <tr>
+          <th>Yacimiento</th>
+          <th>Municipio</th>
+          <th>Editar</th>
+          <th>Mapa</th>
+       </tr>
+        {% for obj in object_list %}
+        <td>{{ obj.yacimiento }}</td>
+        <td>{{ obj.municipio|default:"NO INDICADO" }}</td>
+        <td><center><a href="/yacimiento/{{ obj.id }}/actualizar/" role="button"><img class="img-icon" src="/static/img/edit.png" width="30" height="30" alt="Editar"/></td></center></a>
+        <td><center><a href="/yacimiento/{{ obj.id }}/mapa/" role="button"><img class="img-icon" src="/static/img/marker.png" width="30" height="30" alt="Mapa"/></td></center></a>
+       </tr>
+       {% endfor %}
+</table>
+{% else %}
+<ul class="messages"><li><div class="alert alert-warning" role="alert">No se encontró ningún resultado</div></li></ul>
+{% endif %}
+</div>
+</div>
+<center>
+
+{% if object_list.has_other_pages %}
+  <!--<h5 class="pag-info"><i>Mostrando los elementos del {{ object_list.start_index }} al {{ object_list.end_index }} de un total de {{ object_list.paginator.count }} registros</i></h5>-->
+  <ul class="pagination">
+    {% if object_list.has_previous and object_list.number >= 1|add:5 %}
+      <li><a style="background-color: rgb(250, 250, 250);" href="?{{ page_request_var }}=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">1</a></li>
+    {% else %}
+      <!--<li class="hidden"><span>&laquo;</span></li>-->
+    {% endif %}
+    {% for i in object_list.paginator.page_range %}
+      {% if object_list.number == i %}
+        <li class="active" title="{{ object_list.start_index }}-{{ object_list.end_index }} / {{ object_list.paginator.count }}"><span><strong>{{ i }}</strong><span class="sr-only">(current)</span></span></li>
+      {% else %}
+        {% if object_list.number > i|add:5 or object_list.number < i|add:-5 %}
+        {% elif object_list.number == i|add:5 %}
+          {% if object_list.number != 1|add:5 %}
+            <li class="disabled"><span>...</span></li>
+          {% endif %}
+        {% elif object_list.number == i|add:-5 %}
+          {% if object_list.number != object_list.paginator.num_pages|add:-5 %}
+            <li class="disabled"><span>...</span></li>
+          {% endif %}
+        {% else %}
+          {% widthratio i 1 -1 as j %}{% widthratio object_list.number 1 -1 as k %}{% if object_list.number > i %}{% widthratio object_list.number|add:j 1 10 as c %}{% else %}{% widthratio i|add:k 1 10 as c %}{% endif %}
+          <li><a style="background-color: rgb({{c|add:200}},{{c|add:200}},{{c|add:200}});" href="?{{ page_request_var }}={{ i }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ i }}</a></li>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+    {% if object_list.has_next and object_list.number <= object_list.paginator.num_pages|add:-5 %}
+      <li><a style="background-color: rgb(250, 250, 250);" href="?{{ page_request_var }}={{ object_list.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ object_list.paginator.num_pages }}</a></li>
+    {% else %}
+      <!--<li class="hidden"><span>&raquo;</span></li>-->
+    {% endif %}
+  </ul>
+{% endif %}
+
+</center>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="{%static '/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+</html>

@@ -1,26 +1,25 @@
 {% include "navbar.html" %}
 {% load static %}
-    <h1>Obras de {{ instance.alias }}:</h1>
-<div class="container">
+<h1 style="margin-left: 10px;"><a href="#" onclick="history.go(-1)"><img class="img-icon img-back" src="/static/img/back.png" width="30" height="30" alt="Volver"/></td></a>
+Obras de {{ instance.nombre }} {{ instance.apellidos|default:"" }} ( {{ instance.alias }} )</h1>
+{% if cuadros %}
+{% for cuadros in cuadros %}
+<div title="{{cuadros.observaciones}}" class="container obra-details">
 <div class="left">
-<div class="table-responsive">
-    <tr>
-    {% for cuadros in cuadros %}
-<td><img src="/media/{{ cuadros.anverso }}"  width="240"></td>
-   </tr>
-   </table>
-   </div>
-   </div>
-<div class="container">
+<img class="gz-img" onclick="window.open(this.src, '_blank','menubar=no');" src="{% if cuadros.anverso %}/media/{{ cuadros.anverso }}{% else %}/static/img/noimage.png{% endif %}" width="250">
+</div>
 <div class="right">
-<b>Inventario: </b>{{ cuadros.propietario }}{{ cuadros.numinv }}</p>
-<b>Descripcion: </b>{{ cuadros.descripcion }}</p>
+<b>Numero de inventario: </b>{{ cuadros.codigo|default:"" }}{{ cuadros.numinv }}</p>
 <b>Título: </b>{{ cuadros.titulo }}
-<b>Datación: </b>{{ cuadros.datacion }}</p>
+<b>Descripción: </b>{{ cuadros.descripcion|default:"NO DISPONIBLE" }}</p>
+<b>Datación: </b>{{ cuadros.datacion|default:"DESCONOCIDA" }}</p>
+</div>
+</div>
+<br />
 {% endfor %}
-<div>
-<div>
-<div>
+{% else %}
+<ul class="messages"><li><div class="alert alert-warning" role="alert">No se encontró ningún resultado</div></li></ul>
+{% endif %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="{%static '/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>

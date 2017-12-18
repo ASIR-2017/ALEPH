@@ -6,4 +6,4 @@ class AdminTicket(admin.ModelAdmin):
  list_filter = ["estado","propietario"]
  class Meta:
      model = Ticket
-admin.site.register(Ticket,AdminTicket)
+#admin.site.register(Ticket,AdminTicket)

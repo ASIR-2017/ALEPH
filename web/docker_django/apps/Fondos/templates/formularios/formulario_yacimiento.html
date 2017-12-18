@@ -7,12 +7,20 @@
 <div class="jumbotron">
 <form method='POST' action='' enctype='multipart/form-data'>{% csrf_token %}
 <small>
+{{ form.media }}
 {{ form|crispy }}
  </small>
- <button type="submit" class="save btn btn-default">Guardar</button>
+ <button type="submit" class="button button0 save btn btn-default">Guardar</button> | <a href="javascript:history.back()">Cancelar</a>
 </form>
 </div>
 </div>
+<style>
+#id_yacimiento {
+    float: none !important;
+    width: 100% !important;
+    height: auto !important;
+}
+</style>
 {% endblock %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="{%static '/js/bootstrap.min.js' %}"></script>

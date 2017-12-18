@@ -1,36 +1,71 @@
 {% include "navbar.html" %}
 {% load static %}
-    <h1>Listado de autores:</h1>
-    <div id="container" align="middle">
+<div id="container" align="middle">
 <form method='GET' action=''>
 <input type='text' name='q' placeholder='Búsqueda' value='{{ request.GET.q }}' />
-<input type='submit' value='Buscar'>
+<input type='submit' class='button button0 btn btn-default' value='Buscar'>
 </form>
 </div>
+{% if object_list %}
 {% for autores in object_list %}
+<hr /><center><h1>{{ autores.alias }}</h1></center>
+<div class="container autor-details">
 <div class="left">
-<p><img class="img-circle" src="{{ autores.foto.url }}"  width="240" align="left"></p>
+<center><img class="gz-img" style="padding: 0px;" onclick="window.open(this.src, '_blank','menubar=no');" src="{% if autores.foto %}{{ autores.foto.url }}{% else %}/static/img/noimage.png{% endif %}" height="240">
+<br /><a href="/autor/{{ autores.id }}/actualizar/" role="button"><button class="button button1"  class="btn btn-primary btn-md">Actualizar información</button></a></center>
 </div>
-<div class="container">
 <div class="right">
-<h3>{{ autores.alias }}</h3>
 <p><b>Nombre:</b>{{ autores.nombre }}</p>
-<p><b>Apellidos:</b>{{ autores.apellidos }}</p>
-<p><b>Procedencia:</b>{{ autores.procedencia }}</p>
-<p><b>Fecha de nacimiento exacta o aproximada</b>{{ autores.fnac }}</p>
-<p><b>Fecha de defunción exacta o aproximada:</b>{{ autores.fdef }}</p>
-<p><b>Obras de {{ autores.nombre }} {{ autores.apellidos }} registradas:</b><a href="/autor_clasificacion/{{ autores.id }}"><img src="/static/img/pincel.png" width="40" height="30"/></a></p>
+<p><b>Apellidos:</b>{{ autores.apellidos|default:"DESCONOCIDOS" }}</p>
+<p><b>Procedencia:</b>{{ autores.procedencia|default:"DESCONOCIDA" }}</p>
+<p><b>Fecha de nacimiento:</b>{{ autores.fnac|default:"DESCONOCIDA" }}</p>
+<p><b>Fecha de defunción:</b>{{ autores.fdef|default:"DESCONOCIDA" }}</p>
+<p><strong>Obras del autor registradas:</strong><a href="/autor_clasificacion/{{ autores.id }}"><img class="img-icon" src="/static/img/see.png" width="40" height="30"/></a></p>
 </div>
 </div>
 {% endfor %}
-<div class="pagination">
-        {% if object_list.has_previous %}
-            <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">anterior</a>
+</div>
+{% else %}
+<ul class="messages"><li><div class="alert alert-warning" role="alert">No se encontró ningún resultado</div></li></ul>
+{% endif %}
+<center>
+
+{% if object_list.has_other_pages %}
+  <!--<h5 class="pag-info"><i>Mostrando los elementos del {{ object_list.start_index }} al {{ object_list.end_index }} de un total de {{ object_list.paginator.count }} registros</i></h5>-->
+  <ul class="pagination">
+    {% if object_list.has_previous and object_list.number >= 1|add:5 %}
+      <li><a style="background-color: rgb(250, 250, 250);" href="?{{ page_request_var }}=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">1</a></li>
+    {% else %}
+      <!--<li class="hidden"><span>&laquo;</span></li>-->
+    {% endif %}
+    {% for i in object_list.paginator.page_range %}
+      {% if object_list.number == i %}
+        <li class="active" title="{{ object_list.start_index }}-{{ object_list.end_index }} / {{ object_list.paginator.count }}"><span><strong>{{ i }}</strong><span class="sr-only">(current)</span></span></li>
+      {% else %}
+        {% if object_list.number > i|add:5 or object_list.number < i|add:-5 %}
+        {% elif object_list.number == i|add:5 %}
+          {% if object_list.number != 1|add:5 %}
+            <li class="disabled"><span>...</span></li>
+          {% endif %}
+        {% elif object_list.number == i|add:-5 %}
+          {% if object_list.number != object_list.paginator.num_pages|add:-5 %}
+            <li class="disabled"><span>...</span></li>
+          {% endif %}
+        {% else %}
+          {% widthratio i 1 -1 as j %}{% widthratio object_list.number 1 -1 as k %}{% if object_list.number > i %}{% widthratio object_list.number|add:j 1 10 as c %}{% else %}{% widthratio i|add:k 1 10 as c %}{% endif %}
+          <li><a style="background-color: rgb({{c|add:200}},{{c|add:200}},{{c|add:200}});" href="?{{ page_request_var }}={{ i }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ i }}</a></li>
         {% endif %}
-        {% if object_list.has_next %}
-            <a href="?{{ page_request_var }}={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">siguiente</a>
-        {% endif %}
-    </div>
+      {% endif %}
+    {% endfor %}
+    {% if object_list.has_next and object_list.number <= object_list.paginator.num_pages|add:-5 %}
+      <li><a style="background-color: rgb(250, 250, 250);" href="?{{ page_request_var }}={{ object_list.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ object_list.paginator.num_pages }}</a></li>
+    {% else %}
+      <!--<li class="hidden"><span>&raquo;</span></li>-->
+    {% endif %}
+  </ul>
+{% endif %}
+
+</center>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="{%static '/js/bootstrap.min.js' %}"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

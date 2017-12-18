@@ -17,9 +17,9 @@ def exportar_arqueo(modeladmin, request, queryset):
 exportar_arqueo.short_description = 'Exportar a csv'
 
 class AdminArqueologia(admin.ModelAdmin):
- list_display = ["nombre","seccion","edad"]
+ list_display = ["nombre","seccion","serie","edad"]
  list_filter = ["seccion"]
- search_fields = ["numinv","nombre","seccion","edad","material"]
+ search_fields = ["numinv","nombre","seccion","serie","edad","material"]
  actions = [exportar_arqueo, ]
  class Meta:
      model = Arqueologia
@@ -46,8 +46,8 @@ class AdminAutor(admin.ModelAdmin):
      model = Autor 
 
 class AdminBibliografia(admin.ModelAdmin):
- list_display = ["pagina","edicion"]
- search_fields = ["anio","edicion"]
+ list_display = ["edicion"]
+ search_fields = ["edicion"]
       
  class Meta:
      model = Bibliografia 
@@ -55,9 +55,11 @@ class AdminBibliografia(admin.ModelAdmin):
 
 admin.site.register(Movimiento)
 admin.site.register(Bibliografia,AdminBibliografia)
+admin.site.register(Escritor)
 admin.site.register(Serie)
 admin.site.register(Seccion)
 admin.site.register(Cultura)
+admin.site.register(Edad)
 admin.site.register(Arqueologia,AdminArqueologia)
 admin.site.register(Tecnica)
 admin.site.register(Soporte)
@@ -80,3 +82,4 @@ admin.site.register(Municipio)
 admin.site.register(Museo)
 admin.site.register(Exposicion)
 admin.site.register(Autor,AdminAutor)
+admin.site.register(Biblio_Objeto)

@@ -1,0 +1,17 @@
+{% include 'navbar.html' %}
+{% load static %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="{%static '/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script> 
+<div class="panel panel-info">{% now "Y" as y %}{% now "m" as m %}{% now "d" as d %}{% widthratio y m d as r %}{% widthratio r user.pk r as s %}{% widthratio s user.username|length s as n %}
+<div class="panel-heading"><span>Bienvenido</span> <strong title="Su número de la suerte para hoy: {{ n|slice:'-5:' }}">Administrador</strong></div>
+<div class="panel-body">Hola, {{ user }}. Haga click <a href="/admin"><strong>aquí</strong></a> para acceder al panel de administración.</div></div>
+<button type="button" class="button button1" onclick="ver('docu')"> Ver como: "Documentador" </button>
+<span style="font-size:20px">|</span> <button type="button" class="button button1" onclick="ver('arq')"> Ver como: "Restaurador de Arqueología" </button>
+<span style="font-size:20px">|</span> <button type="button" class="button button1" onclick="ver('ba')"> Ver como: "Restaurador de Bellas Artes" </button>
+<script type="text/javascript">
+  function ver(opt) {
+     location.href = "/index="+opt;
+  }
+</script>
+</html>

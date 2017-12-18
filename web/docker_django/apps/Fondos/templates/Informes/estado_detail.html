@@ -5,81 +5,80 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script><!-- This is where to put the location of the jquery library you intend to use-->
 <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'></script>
 <script src="{% static '/js/jquery.min.js' %}"></script>
+</head>
+{% for datos in datos %}
 <div class="container">
-<a href="#" onclick="history.go(-1)"><img src="/static/img/back.jpg" width="30" height="30" alt="Atrás"/></td></a></a>
+<h1 style="margin-left: 0px;"><a href="{% url 'detallebellasartes' datos.pk %}"><img src="/static/img/back.png" width="30" height="30" alt="Atrás"/></td></a></a>
+Estado de {{ datos.codigo|default:"" }}{{ datos.numinv }} - {{ datos.titulo|default:"(?)" }}</h1>
+<br />
+<h2>Revisión de colección expuesta</h2>
 <table class="table">
-    </table>
-    {% for datos in datos %}
-      <b><h3>Revisión colección expuesta</h3></b>
-<p><b>Nombre restaurador:</b>{{ instance.nombre_res }}</p>
-<p><b>Apellido restaurador:</b>{{ instance.ape_res }}</p>
-<p><b>Ubicación:</b>{{ datos.ubicacion }}</p>
-<div class="container">
-<table class="table">
-  <b><h3>Descripción de la obra</h3></b>
-<tr>
-<th>Fecha</th>
-<th>Número de inventario</th>
-<th>Título</th>
-<th>Autor</th>
-<th>Cronología</th>
-<th>Técnica</th>
-<th>Dimensiones</th>
-<th>Historia material</th>
-</th></tr>      
-<tr>
-<td>{{ instance.fecha }}</td>
-<td>{{ datos.codigo }}{{ datos.numinv }}</td>
-<td>{{ datos.titulo }}</td>
-<td>{{ datos.autor }}</td>
-<td>{{ datos.datacion }}</td>
-{% for tecnica in datos.tecnica.all %}
-<td>{{ tecnica.nombre }}</td>
-{% endfor %}
-<td>{{ datos.altura }}cm x {{ datos.ancho }} cm </td>
-<td></td>
-</tr>
-</table>
-</div>
-</div>
-<p align="center"><img src="{{ datos.anverso.url }}" width="240px"><img src="{{ datos.reverso.url }}" width="240px"></p>
-<div class="container">
-    {% endfor %}
-<table class="table">
-  <b><h3>Características del examen</h3></b>
-<tr>
-<th>Sala</th>
-<th>Estudios</th>
-<th>Observaciones</th>
-</th></tr>
-<tr>
-<td>Características de la sala</td>
+<tr><th>Restaurador</th><td>{{ instance.nombre_res }} {{ instance.ape_res }}</td></tr> 
+<tr><th>Estudios</th><td>
 {% for estudio in instance.estudio.all %}
-<td>{{ estudio.nombre }}</td>
+{{ estudio.nombre }}&nbsp;&nbsp;&nbsp;
 {% endfor %}
-<td>{{ instance.observaciones }}</td>
+</td></tr>
+<tr><th>Objetivo del informe</th><td>{{ instance.objetivo|default:"DESCONOCIDO"|linebreaksbr }}</td></tr> 
+<tr><th>Observaciones</th><td>{{ instance.observaciones|default:"NINGUNA"|linebreaksbr }}</td></tr> 
+<tr><th>Fecha del informe</th><td>{{ instance.fecha }}</td></tr> 
 </table>
-</div>  
-<div class="container">
-<h3>Descripción del estado de conservacion</h3>
-<p><b>Marco:</b> {{ instance.marco }}</p>
-<p><b>Obra: </b> {{ instance.obra }}</p>
 </div>
 <div class="container">
-<h3>Conclusiones</h3>
-<p><b>Conlusión: </b> {{ instance.conclusion }}</p>
-<p><b>Propuesta de intervención: </b> {{ instance.propuesta }}
-<p><b> Nivel de prioridad:</b> {{ instance.prioridad }} </p>
+<h2>Descripción de la obra</h2>
+<table class="table" style="width: 42%; float: left;">
+
+<tr><th>Número de inventario</th><td>{{ datos.codigo|default:"" }}{{ datos.numinv }}</td></tr>  
+<tr><th>Título</th><td>{{ datos.titulo }}</td></tr>  
+<tr><th>Autor</th><td>{{ datos.autor|default:"DESCONOCIDO" }}</td></tr>  
+<tr><th>Cronología</th><td>{{ datos.datacion|default:"DESCONOCIDA" }}</td></tr>  
+<tr><th>Técnicas</th><td>
+{% for tecnica in datos.tecnica.all %}
+{{ tecnica.nombre }}&nbsp;&nbsp;&nbsp;
+{% endfor %}
+</td></tr> 
+<tr><th>Dimensiones</th><td>{{ datos.altura|default:"0" }} cm x {{ datos.ancho|default:"0" }} cm </td></tr>  
+</table>
+<center style="width: 56%; float: right;">
+	<img class="gz-img" onclick="window.open(this.src, '_blank','menubar=no');" src="{% if datos.anverso %}{{ datos.anverso.url }}{% else %}/static/img/noimage.png{% endif %}" width="240px">
+	<img class="gz-img" onclick="window.open(this.src, '_blank','menubar=no');" src="{% if datos.reverso %}{{ datos.reverso.url }}{% else %}/static/img/noimage.png{% endif %}" width="240px">
+</center>
 </div>
+{% endfor %}
+<div class="container">
+<h2>Descripción del estado de conservacion</h2>
+<table class="table">
+<tr><th>Marco</th><td>{{ instance.marco|linebreaksbr }}</td></tr> 
+<tr><th>Obra</th><td>{{ instance.obra|linebreaksbr }}</td></tr>   
+</table>
+</div>
+<div class="container">
+<h2>Conclusiones</h2>
+<table class="table">
+<tr><th>Propuesta de intervención</th><td>{{ instance.propuesta|linebreaksbr }}</td></tr> 
+<tr><th>Nivel de prioridad</th><td>{{ instance.prioridad }}</td></tr>   
+</table>
+</div>
+{% if intervencion|length %}
 <div class="container">
 {% for inter in intervencion %}
-    <h3>Intervenciones</h3>
-    <h2>Intervencion {{ inter.fecha }}</h2>
-<p><b>Tipo de intervención: </b> {{ inter.tipo }}</p>
-<p><b>Criterios: </b> {{ inter.criterios }}
-<p><b> Descripción:</b> {{ inter.descripcioninter }} </p>
-<p><b> Descripción:</b> {{ inter.recom }} </p>
+<h2>Intervención del {{ inter.fecha }} <a href="/interactualizar/{{ inter.pk }}" role="button"><img class="img-icon" src="/static/img/edit.png" width="30" height="30" style="position: relative; top: -3px" alt="Editar"/></a></h2>
+<table class="table">
+<tr><th>Tipo de intervención</th><td>{{ inter.tipo }}</td></tr> 
+<tr><th>Restaurador</th><td>{% if inter.interventor %}{{ inter.interventor }}{% else %}{{ instance.nombre_res }} {{ instance.ape_res }}{% endif %}</td></tr> 
+<tr><th>Justificación</th><td>{{ inter.justificacion|linebreaksbr }}</td></tr>  
+<tr><th>Criterios</th><td>{{ inter.criterios|linebreaksbr }}</td></tr>  
+<tr><th>Descripción</th><td>{{ inter.descripcioninter|linebreaksbr }}</td></tr>  
+<tr><th>Recomendaciones</th><td>{{ inter.recom|linebreaksbr }}</td></tr>  
+<tr><th>Prioridad tras la intervención</th><td>{{ inter.priori_des }}</td></tr>   
+</table>
+<b style="font-size:20px;">Zonas intervenidas: </b>
+<img class="gz-img" onclick="window.open(this.src, '_blank','menubar=no');" src="{% if inter.svg1 %}{{ inter.svg1.url }}{% else %}/static/img/noimage.png{% endif %}" width="33%">
+<img class="gz-img" onclick="window.open(this.src, '_blank','menubar=no');" src="{% if inter.svg2 %}{{ inter.svg2.url }}{% else %}/static/img/noimage.png{% endif %}" width="33%">
+<img class="gz-img" onclick="window.open(this.src, '_blank','menubar=no');" src="{% if inter.svg3 %}{{ inter.svg3.url }}{% else %}/static/img/noimage.png{% endif %}" width="33%">
+</div>
 {% endfor %}
+{% endif %}
 <!-- For this to work, the files need to be labeled with numbers (slideNumber1.png, slideNumber2.png, etc); I have successfully used numbers and letters (tn_1a.jpg, tn_2b.jpg, etc);  however, you can't use the same numbers (NOT tn_1a.jpg, tn_1b.jpg) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
