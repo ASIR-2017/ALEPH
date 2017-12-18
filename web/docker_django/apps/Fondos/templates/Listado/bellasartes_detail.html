@@ -1,0 +1,75 @@
+{% include "navbar.html" %}
+{% load static %}
+<head>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'></script>
+<script src="{% static '/js/jquery.min.js' %}"></script>
+</style>
+<h1><a href="#" onclick="history.go(-1)"><img src="/static/img/back.jpg" width="30" height="30" alt="Detalles"/></td></a></a>
+{{ instance.codigo }}{{ instance.numinv }}</h1><a href="/registrarestado/{{ instance.pk }}"><button class="button button1" class="btn btn-primary btn-md">Crear un nuevo informe de estado</button></a></p>
+<div class="left">
+<div class="table-responsive">
+<tr>
+<td> <img src="{{ instance.anverso.url }}" width="240"></td>
+<td> <img src="{{ instance.reverso.url }}" width="240"></td>
+</tr>
+</table>
+</div>
+{{ instance.titulo }}
+</div> 
+</div> 
+<div class ="container">
+<div class="right">
+<b>Autor:</b>{{ instance.autor }}<a href="/autor/{{ instance.autor.pk }}/actualizar"><img src="/static/img/edit.png" width="30" height="30" alt="Detalles"/></a></p> 
+<b>Descripción:</b>{{ instance.descripcion }}
+<b>Iconografía</b>
+{% for iconografia in instance.iconografia.all %}<li>{{ iconografia.nombre }}<a href="/iconografia/{{ iconografia.pk }}/actualizar"><img src="/static/img/edit.png" width="30" height="30" alt="Detalles"/></a></p></li>
+{% endfor %}
+<b>Procedencia:</b>{{ instance.procedencia }}</p>
+<b>Tamaño:</b>{{ instance.altura }} cm x {{ instance.ancho }} cm</p>
+<b>Ubicación</b>{{ instance.ubicacion }}</p>
+<b>Soporte</b>{{ instance.soporte}}<a href="/soporte/{{ soporte.pk }}/actualizar"><img src="/static/img/edit.png" width="30" height="30" alt="Detalles"/></a></p>
+<b>Técnica</b>{% for tecnica in instance.tecnica.all %}<li>{{ tecnica.nombre }}<a href="/tecnica/{{ tecnica.pk }}/actualizar"><img src="/static/img/edit.png" width="30" height="30" alt="Detalles"/></a></p></li>
+{% endfor %}
+{% for bibliografia in instance.bibliografia.all %}
+<b>Bibliografía y referencias</b>{% if bibliografia == None %}
+No hay referencias.
+{% else %}
+{% endif %}
+Autor: {{ bibliografia.escritor }}<a href="/bibliografia/{{ bibliografia.pk }}/actualizar"><img src="/static/img/edit.png" width="30" height="30" alt="Detalles"/></a></p>
+Edición: {{ bibliografia.edicion }}
+Referencias: <i>{{ bibliografia.extracto }} </i>
+{% endfor %}
+</p>
+</div>
+</div>
+<div class ="container">
+<h1>Informes realizados</h1>
+<table class="sortable">
+<tr>  
+<th>Fecha</th> 
+<th>Prioridad</th> 
+<th>Detalles</th> 
+<th>Añadir intervención</th> 
+<th>Editar intervención</th> 
+</tr>
+<tr>
+{% for estado in estado %} 
+<td>{{ estado.fecha }} </td>    
+<td>{{ estado.prioridad }} </td>
+<td>Ver informe<a href="/estado/{{ estado.id }}/"><img src="/static/img/status.png" width="30" height="30" alt="Detalles"/></td></a>
+<td>Añadir intervención al informe<a href="/registrarintervencion/{{ estado.id }}"><img src="/static/img/add.png" width="30" height="30" alt="Añadir intervención"/></td></a>
+<td>Editar informe de estado<a href="/estadoactualizar/{{ estado.id }}"><img src="/static/img/edit.png" width="30" height="30" alt="Añadir intervención"/></td></a>
+</tr>
+{% endfor %}
+</table>
+</div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="{% static '/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+</script> 
+</body>
+</html>

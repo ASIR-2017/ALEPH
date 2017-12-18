@@ -1,0 +1,5 @@
+- model: Fondos.Pais
+  pk: 1
+  fields:
+    nombre: "España"
+    continente: 1

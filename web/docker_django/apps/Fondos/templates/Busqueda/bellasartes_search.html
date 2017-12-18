@@ -1,0 +1,78 @@
+{% include "navbar.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block headcontent %}
+<html lang="es">
+	<link rel="stylesheet" href="/static/css/style.css">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <form method="get">
+{% endblock %}
+{% block content %}
+<div class ="left">
+<div class="col-5">
+   <div class="form-group ">
+         {{ filter.form.objeto.label_tag }}
+         {% render_field filter.form.objeto class="form-control" %}
+        </div>
+        </div>
+     <div class="col-5">
+          {{ filter.form.titulo.label_tag }}
+          {% render_field filter.form.titulo class="form-control" %}
+        </div>
+        <div class="col-5">
+          {{ filter.form.autor.label_tag }}
+          {% render_field filter.form.autor class="form-control" %}
+        </div>
+    <div class="col-5">
+          {{ filter.form.numinv.label_tag }}
+          {% render_field filter.form.numinv class="form-control" %}
+        </div>
+<div class="col-5">
+ <div class="checkbox">
+          {{ filter.form.tecnica.label_tag }}
+          {% render_field filter.form.tecnica class="form-control" %}
+    </div>
+    </div>
+<div class="col-5">
+ <div class="checkbox">
+          {{ filter.form.soporte.label_tag }}
+          {% render_field filter.form.soporte class="form-control" %}
+    </div>
+    </div>
+<button class="button button1"  class="btn btn-primary btn-md">Buscar</button></a></p>
+  </form>
+      </head>
+      </div>
+      </div>  
+      </div>
+      </div>
+      </div>
+      
+<div class="container">
+<div class="right">
+<table class="sortable" width="50 %">
+  <tr>
+    <th>Numero inventario</th>
+    <th>Titulo de la obra</th>
+    </tr>
+      {% for objeto in filter.qs %}
+  <tr> 
+     <td> {{ objeto.propietario}}{{ objeto.numinv }}<a href="/bellasartes/{{ objeto.pk }}"><img src="/static/img/see.png" width="30" height="30" alt="Detalles"/></a></td>
+    <td>{{ objeto.titulo }}</td>
+      {% endfor %}
+</tr>
+  </table>
+  </div>
+  </div>
+  </div>
+  </div>
+{% endblock %}
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="{%static '/js/bootstrap.min.js' %}"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+</html>

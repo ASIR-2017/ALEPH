@@ -1,0 +1,49 @@
+{% include "navbar.html" %}
+{% load static %}
+<div id="container" align="middle">
+<form method='GET' action=''>
+<input type='text' name='q' placeholder='Búsqueda' value='{{ request.GET.q }}' />
+<input type='submit' value='Buscar' />
+</form>
+</div>
+</div>
+<div class="container">
+<table class="sortable">
+    <tr>
+        <th>Número de inventario</th>
+          <th>Título</th>
+          <th>Autor</th>
+          <th>Ver más</th>
+          <th>Editar</th>
+          <th>Borrar</th>
+          </tr>
+          {% for obj in object_list %}
+        <td>{{ obj.codigo }}{{ obj.numinv }}</td>
+        <td>{{ obj.titulo }}</td>
+        <td>{{ obj.autor }}</td>
+        <td><a href="{{ obj.get_absolute_url }}"  role="button"><img src="/static/img/lupa.png" width="30" height="30" alt="Agregar otro"/></td> </a>
+       <td><a href="/bellasartes/{{ obj.id }}/editar/" role="button"><img src="/static/img/edit.png" width="30" height="30" alt="Agregar otro"/></td></a>
+       <td><a href="/bellasartes/{{ obj.id }}/borrar/" onclick="return confirm('Se borrará toda la información relacionada con {{ obj.titulo }},¿estás seguro?')" role="button"><img src="/static/img/delete.png" width="30" height="30" alt="Agregar otro"/></td>
+       </tr>
+       {% endfor %}
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="pagination">
+        {% if object_list.has_previous %}
+            <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">anterior</a>
+        {% endif %}
+        {% if object_list.has_next %}
+            <a href="?{{ page_request_var }}={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">siguiente</a>
+        {% endif %}
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="{%static '/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+  </body>
+</html>
+

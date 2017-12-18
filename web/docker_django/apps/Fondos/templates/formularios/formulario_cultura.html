@@ -1,0 +1,18 @@
+ <!--Plantilla HTML para el formulario de arqueologia-->
+{% include 'navbar.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<div class="container">
+<div class="jumbotron">
+<form method='POST' action='' enctype='multipart/form-data'>{% csrf_token %}
+<small>
+ {{ form|crispy }}
+</small>
+<button type="submit" class="save btn btn-default">Guardar</button>
+</form>
+</div>
+</div>
+{% endblock %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>

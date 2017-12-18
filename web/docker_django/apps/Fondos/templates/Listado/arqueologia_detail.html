@@ -1,0 +1,60 @@
+{% include "navbar.html" %}
+{% load static %}
+<h1><a href="#" onclick="history.go(-1)"><img src="/static/img/back.jpg" width="30" height="30" alt="Detalles"/></td></a></a>
+{{ instance.codigo }}{{ instance.numinv }}</h1><a href="/informearqueo_crear/{{ instance.pk }}"><button class="button button1"  class="btn btn-primary btn-md">Crear un nuevo informe</button></a></p>
+<div class="left">
+<div class="table-responsive">
+<tr>
+<td> <img src="{{ instance.anverso.url }}" width="240"></td>
+<td> <img src="{{ instance.reverso.url }}" width="240"></td>
+</tr>
+</table>
+</div>
+{{ instance.nombre }}
+</div>
+<div class="container">
+<div class="right">
+<p><b>Edad: </b>{{ instance.edad }}
+<p><b>Descripción:</b>{{ instance.descripcion }}</p>
+<p><b>Cultura:</b>{{ instance.cultura }}<a href="/cultura/{{ instance.cultura.pk }}/actualizar"><img src="/static/img/edit.png" width="30" height="30" alt="Detalles"/></a></p>
+<p><b>Tamaño:</b>{{ instance.altura }} cm x {{ instance.ancho }} cm</p>
+<p><b>Ubicación</b>{{ instance.ubicacion }}</p>
+<p><b>Hallazgos:</b><p>{{ instance.hallazgos }}</p>
+<p><b>Encontrado en:</b>{{ instance.yacimiento }}<a href="/yacimiento/{{ instance.yacimiento.pk }}/actualizar"><img src="/static/img/edit.png" width="30" height="30" alt="Detalles"/></a></p>
+<p><b>Materiales:</b>{% for material in instance.material.all %}<td>{{ material.nombre }}</td><a href="/material/{{ material.pk }}/actualizar"><img src="/static/img/edit.png" width="30" height="30" alt="Detalles"/></a></p>
+{% endfor %}
+<p><b>Bibliografía y referencias</b>{% if instance.bibliografia == None %}
+No hay referencias.
+{% else %}
+{% endif %}
+{% for bibliografia in instance.bibliografia.all %}
+<p>Autor: {{ bibliografia.escritor }}<a href="/bibliografia/{{ bibliografia.pk }}/actualizar"><img src="/static/img/edit.png" width="30" height="30" alt="Detalles"/></a></p>
+<p>Edición: {{ bibliografia.edicion }}</p>
+<p><i>"{{ bibliografia.extracto }}"</i>, Página {{ bibliografia.pagina }}</p>
+{% endfor %}
+</div>
+</div>
+<div class ="container">
+<h1>Informes realizados</h1>
+<table class="sortable">
+<tr>  
+<th>Fecha</th> 
+<th>Ver informe</th> 
+<th>Editar informe</th> 
+</tr>
+<tr>
+{% for estado in estado %} 
+<td>{{ estado.fecha }} </td>    
+<td>Ver informe<a href="/informearqueo_ver/{{ estado.id }}/"><img src="/static/img/status.png" width="30" height="30" alt="Detalles"/></td></a>
+<td>Editar informe de estado<a href="/informearqueo_actu/{{ estado.id }}"><img src="/static/img/edit.png" width="30" height="30" alt="Añadir intervención"/></td></a>
+</tr>
+{% endfor %}
+</table>
+</div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="{%static '/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+</body>
+</html>
+

@@ -1,0 +1,26 @@
+{% include 'navbar.html' %}
+{% load static %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="{%static '/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+</body>
+<div class="container">
+<div class="panel panel-info">
+<div class="panel-heading">Últimos informes realizados</div>
+<div class="panel-body">Hola, {{ user }},haga click en el botón para abrir el desplegable para ver su último trabajo realizado</div>
+ </div>
+<button type="button" class="button button1" data-toggle="collapse" data-target="#informes"> Mis últimas tareas
+</button>
+<div id="informes" class="collapse in">
+{% for ultimos in ultimosinfo.all %}
+<b>Informes de estado</b>
+<p>Número de inventario: {{ ultimos.objeto.codigo }}{{ ultimos.objeto.numinv }}</p>
+<p>Prioridad:{{ ultimos.prioridad }}</p>
+<p>Ver informe<a href="/estado/{{ ultimos.id }}"><img src="/static/img/status.png" width="30" height="30" alt="Detalles"/></p></a>
+<p>Añadir intervención al informe<a href="/registrarintervencion/{{ ultimos.id }}"><img src="/static/img/add.png" width="30" height="30" alt="Añadir intervención"/></a></p>
+<p>Editar informe<a href="/estadoactualizar/{{ ultimos.id }}"><img src="/static/img/edit.png" width="30" height="30" alt="Añadir intervención"/></p></a>
+{% endfor %}             
+</div>
+</div>
+</div>
+</html>

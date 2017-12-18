@@ -1,0 +1,46 @@
+{% include "navbar.html" %}
+{% load static %}
+<div id="container" align="middle">
+<form method='GET' action=''>
+<input type='text' name='q' placeholder='Búsqueda' value='{{ request.GET.q }}' />
+<input type='submit' value='Buscar' />
+</form>
+</div>
+</div>
+<div id="container">
+<div class="container">
+<table class="sortable">
+    <tr>    
+        <th>Número de inventario</th>
+          <th>Fecha</th>
+          <th>Prioridad</th>
+          </tr>
+        {% for obj in object_list %}
+        <td>{{ obj.objeto }}</td>
+        <td>{{ obj.fecha }}</td>
+        <td>{{ obj.prioridad }}</td>
+       </tr>
+       {% endfor %}
+</table>
+</div>
+</div>
+</div>
+</div>
+<ul class="pagination">
+    <span class="step-links">
+        {% if object_list.has_previous %}
+            <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">anterior</a>
+        {% endif %}
+        <ul class="pagination">
+        <span class="current">
+            Pag. {{ object_list.number }} de {{ object_list.paginator.num_pages }}.
+        </span>
+        {% if object_list.has_next %}
+            <a href="?{{ page_request_var }}={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">siguiente</a>
+        {% endif %}
+    </span>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="{%static '/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+{% include "navbar.html" %}
+{% load static %}
+{% for misticket in misticket %}
+{% if misticket.gravedad >= 5 %}
+<div class="panel panel-danger">
+      <div class="panel-heading">{{ misticket.asunto }}</div>
+      <div class="panel-body">{{ misticket.descripcion }}</div>
+</div>
+{% else %}
+<div class="panel panel-warning">
+      <div class="panel-heading">{{ misticket.asunto }}</div>
+      <div class="panel-body">{{ misticket.descripcion }}</div>
+</div>
+{% endif %}
+{% endfor %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="{%static '/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>

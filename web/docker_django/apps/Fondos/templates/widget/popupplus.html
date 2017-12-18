@@ -1,0 +1,17 @@
+{% load static %}
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>Museografía</title>
+<script src="{% static 'js/sorttable.js' %}"></script> 
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'css/ie10-viewport-bug-workaround.css' %}" rel="stylesheet">
+<link href="{% static 'css/navbar-static-top.css' %}" rel="stylesheet">
+<script src="{% static 'js/ie-emulation-modes-warning.js' %}"></script>
+</head>
+<a href="/agregar/{{ field }}/" class="add-another" id="add_id_{{ id }}" onclick="return showAddAnotherPopup(this);" style="text-decoration: none;">
+<img src="/static/img/add.png" width="15" height="15" alt="Agregar otro"/>
+</a>

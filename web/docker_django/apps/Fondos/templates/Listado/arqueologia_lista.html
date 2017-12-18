@@ -1,0 +1,47 @@
+{% include "navbar.html" %}
+{% load static %}
+<div id="container" align="middle">
+<form method='GET' action=''>
+<input type='text' name='q' placeholder='Búsqueda' value='{{ request.GET.q }}' />
+<input type='submit' value='Buscar' />
+</form>
+</div>
+<div class="container">
+<table class="sortable">
+    <tr>    
+        <th>Número de inventario</th>
+          <th>Nombre</th>
+          <th>Sección</th>
+          <th>Edad</th>
+          <th>Ver más</th>
+          <th>Editar</th>
+          <th>Borrar</th>
+          </tr>
+<tr>
+        {% for obj in object_list %}
+        <td>{{ obj.codigo }}{{ obj.numinv }}</td>
+        <td>{{ obj.nombre }}</td>
+        <td>{{ obj.seccion }}</td>
+        <td>{{ obj.edad }}</td>
+        <td><a href="{{ obj.get_absolute_url }}"  role="button"><img src="/static/img/lupa.png" width="30" height="30" alt="vER"/></a></td>
+       <td><a href="/arqueologia/{{ obj.id }}/editar/" role="button"><img src="/static/img/edit.png" width="30" height="30" alt="Editar"/></a></td>
+       <td><a href="/arqueologia/{{ obj.id }}/borrar/" onclick="return confirm('Se borrará toda la información relacionada con {{ obj.nombre }},¿estás seguro?')" role="button"><img src="/static/img/delete.png" width="30" height="30" alt=Borrar"/></a></td>
+       </tr>
+       {% endfor %}
+</table>
+</div>
+</div>
+<div class="pagination">
+{% if object_list.has_previous %}
+<a href="?{{ page_request_var }}={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">1</a>
+{% endif %}
+{% if object_list.has_next %}
+<a href="?{{ page_request_var }}={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">2</a>
+{% endif %}
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="{%static '/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+  </body>
+</html>
+

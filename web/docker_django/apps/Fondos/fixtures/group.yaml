@@ -1,0 +1,13 @@
+- model: auth_group
+  pk: 1
+  fields:
+    name: "Documentador"
+- model: auth_group
+  pk: 2
+  fields:
+    name: "RestauradorBA"
+- model: auth_group
+  pk: 3
+  fields:
+    name: "RestauradorARQ"
+

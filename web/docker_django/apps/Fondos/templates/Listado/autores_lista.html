@@ -1,0 +1,39 @@
+{% include "navbar.html" %}
+{% load static %}
+    <h1>Listado de autores:</h1>
+    <div id="container" align="middle">
+<form method='GET' action=''>
+<input type='text' name='q' placeholder='Búsqueda' value='{{ request.GET.q }}' />
+<input type='submit' value='Buscar'>
+</form>
+</div>
+{% for autores in object_list %}
+<div class="left">
+<p><img class="img-circle" src="{{ autores.foto.url }}"  width="240" align="left"></p>
+</div>
+<div class="container">
+<div class="right">
+<h3>{{ autores.alias }}</h3>
+<p><b>Nombre:</b>{{ autores.nombre }}</p>
+<p><b>Apellidos:</b>{{ autores.apellidos }}</p>
+<p><b>Procedencia:</b>{{ autores.procedencia }}</p>
+<p><b>Fecha de nacimiento exacta o aproximada</b>{{ autores.fnac }}</p>
+<p><b>Fecha de defunción exacta o aproximada:</b>{{ autores.fdef }}</p>
+<p><b>Obras de {{ autores.nombre }} {{ autores.apellidos }} registradas:</b><a href="/autor_clasificacion/{{ autores.id }}"><img src="/static/img/pincel.png" width="40" height="30"/></a></p>
+</div>
+</div>
+{% endfor %}
+<div class="pagination">
+        {% if object_list.has_previous %}
+            <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">anterior</a>
+        {% endif %}
+        {% if object_list.has_next %}
+            <a href="?{{ page_request_var }}={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">siguiente</a>
+        {% endif %}
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="{%static '/js/bootstrap.min.js' %}"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+  </body>
+</html>

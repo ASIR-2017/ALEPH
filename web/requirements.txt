@@ -1,0 +1,12 @@
+Django==1.11
+gunicorn==19.3.0
+django-extensions
+ipython
+django-bootstrap3
+psycopg2
+pillow
+django-filter
+django-widget-tweaks
+django-crispy-forms
+django-suit
+django-suit-locale

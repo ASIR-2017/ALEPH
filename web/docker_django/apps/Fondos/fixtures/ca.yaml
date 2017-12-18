@@ -1,0 +1,6 @@
+- model: Fondos.Ca
+  pk: 1
+  fields:
+    nombre: "Andalucía"
+    pais: 1
+

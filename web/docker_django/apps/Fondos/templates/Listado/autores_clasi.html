@@ -1,0 +1,28 @@
+{% include "navbar.html" %}
+{% load static %}
+    <h1>Obras de {{ instance.alias }}:</h1>
+<div class="container">
+<div class="left">
+<div class="table-responsive">
+    <tr>
+    {% for cuadros in cuadros %}
+<td><img src="/media/{{ cuadros.anverso }}"  width="240"></td>
+   </tr>
+   </table>
+   </div>
+   </div>
+<div class="container">
+<div class="right">
+<b>Inventario: </b>{{ cuadros.propietario }}{{ cuadros.numinv }}</p>
+<b>Descripcion: </b>{{ cuadros.descripcion }}</p>
+<b>Título: </b>{{ cuadros.titulo }}
+<b>Datación: </b>{{ cuadros.datacion }}</p>
+{% endfor %}
+<div>
+<div>
+<div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="{%static '/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+  </body>
+</html>

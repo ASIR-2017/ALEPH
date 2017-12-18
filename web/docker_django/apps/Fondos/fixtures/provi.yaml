@@ -1,0 +1,5 @@
+- model: Fondos.Provincia
+  pk: 1
+  fields:
+    nombre: "Cádiz"
+    ca: 1

@@ -1,0 +1,4 @@
+- model: Fondos.Continente
+  pk: 1
+  fields:
+    nombre: "Europa"
